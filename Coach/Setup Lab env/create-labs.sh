@@ -248,7 +248,7 @@ AOAI_KEY=$(az cognitiveservices account keys list \
   --resource-group "$RG_NAME" \
   --query "key1" \
   -o tsv 2>/dev/null || echo "NOT_AVAILABLE")
-``
+
 
   # 6) Windows 11 VM
   if ! az vm show -g "$RG_NAME" -n "$VM_NAME" --only-show-errors >/dev/null 2>&1; then
