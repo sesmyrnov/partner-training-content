@@ -10,7 +10,7 @@ COUNT="${1:-1}"
 
 # ===== Tenant / naming =====
 DOMAIN="${DOMAIN:-mannu2050gmail578.onmicrosoft.com}"
-USER_PREFIX="${USER_PREFIX:-labeuser}"      # e.g. lab1user1, lab1user2
+USER_PREFIX="${USER_PREFIX:-labybuser}"      # e.g. lab1user1, lab1user2
 RG_SUFFIX="${RG_SUFFIX:--rg}"               # e.g. lab1user1-rg
 CDB_PREFIX="${CDB_PREFIX:-cdb}"             # e.g. cdblab1user1
 AOAI_PREFIX="${AOAI_PREFIX:-aoai}"          # e.g. aoai-lab1user1
@@ -21,8 +21,8 @@ LOCATION="${LOCATION:-westus2}"             # RG / Cosmos DB / VM
 AOAI_LOCATION="${AOAI_LOCATION:-eastus}"    # Azure OpenAI (safer for ada-002)
 
 # ===== Shared passwords =====
-ENTRA_USER_PASSWORD="${ENTRA_USER_PASSWORD:-LabUser!23456Aa}"
-VM_ADMIN_PASSWORD="${VM_ADMIN_PASSWORD:-LabUser!23456Aa}"
+ENTRA_USER_PASSWORD="${ENTRA_USER_PASSWORD:-Lxx}"
+VM_ADMIN_PASSWORD="${VM_ADMIN_PASSWORD:-Lxx}"
 
 # ===== VM sizing =====
 VM_SIZE="${VM_SIZE:-Standard_F2als_v7}"
@@ -127,92 +127,128 @@ else
 fi
 
   # 4) Cosmos DB
-  if ! az cosmosdb show --name "$CDB_NAME" --resource-group "$RG_NAME" --only-show-errors >/dev/null 2>&1; then
-    echo "Creating Cosmos DB account: $CDB_NAME"
-    az cosmosdb create \
-      --name "$CDB_NAME" \
-      --resource-group "$RG_NAME" \
-      --kind GlobalDocumentDB \
-      --locations regionName="$LOCATION" failoverPriority=0 isZoneRedundant=false \
-      --capabilities EnableServerless \
-      --only-show-errors
-  else
-    echo "Cosmos DB already exists: $CDB_NAME"
-  fi
 
-  COSMOS_CONN=$(az cosmosdb keys list \
+# 4) Cosmos DB
+if ! az cosmosdb show --name "$CDB_NAME" --resource-group "$RG_NAME" --only-show-errors >/dev/null 2>&1; then
+  echo "Creating Cosmos DB account: $CDB_NAME"
+  az cosmosdb create \
     --name "$CDB_NAME" \
     --resource-group "$RG_NAME" \
-    --type connection-strings \
-    --query "connectionStrings[0].connectionString" \
-    -o tsv)
+    --kind GlobalDocumentDB \
+    --locations regionName="$LOCATION" failoverPriority=0 isZoneRedundant=false \
+    --only-show-errors
+else
+  echo "Cosmos DB already exists: $CDB_NAME"
+fi
 
-  # 5) Azure OpenAI + embedding deployment
-  AOAI_ENDPOINT="NOT_CREATED"
-  AOAI_KEY="NOT_CREATED"
-  AOAI_DEPLOYMENT_OUT="$AOAI_DEPLOYMENT_NAME"
+# Use SAME naming as your script (aligned with USER_ALIAS)
+IDENTITY_NAME="${USER_ALIAS}-mi"
 
-  if ! az cognitiveservices account show -g "$RG_NAME" -n "$AOAI_NAME" --only-show-errors >/dev/null 2>&1; then
-    echo "Creating Azure OpenAI resource: $AOAI_NAME"
-    set +e
-    az cognitiveservices account create \
+# Create Managed Identity if missing (fixes ResourceNotFound)
+if ! az identity show --name "$IDENTITY_NAME" --resource-group "$RG_NAME" >/dev/null 2>&1; then
+  echo "Creating Managed Identity: $IDENTITY_NAME"
+
+  az identity create \
+    --name "$IDENTITY_NAME" \
+    --resource-group "$RG_NAME" \
+    --location "$LOCATION" \
+    --only-show-errors
+fi
+
+# Now safely fetch principalId
+MI_PRINCIPAL_ID=$(az identity show \
+  --name "$IDENTITY_NAME" \
+  --resource-group "$RG_NAME" \
+  --query principalId -o tsv)
+
+
+# Role Assignment → Current User
+az cosmosdb sql role assignment create \
+  --account-name "$CDB_NAME" \
+  --resource-group "$RG_NAME" \
+  --scope "//" \
+  --principal-id "$USER_OBJECT_ID" \
+  --role-definition-id "00000000-0000-0000-0000-000000000002"
+
+
+# Role Assignment → Managed Identity
+az cosmosdb sql role assignment create \
+  --account-name "$CDB_NAME" \
+  --resource-group "$RG_NAME" \
+  --scope "//" \
+  --principal-id "$MI_PRINCIPAL_ID" \
+  --role-definition-id "00000000-0000-0000-0000-000000000002"
+
+
+  # 5) Azure OpenAI + multiple deployments
+
+AOAI_ENDPOINT="NOT_CREATED"
+AOAI_KEY="NOT_CREATED"
+
+# Create OpenAI account if not exists
+if ! az cognitiveservices account show -g "$RG_NAME" -n "$AOAI_NAME" --only-show-errors >/dev/null 2>&1; then
+  echo "Creating Azure OpenAI resource: $AOAI_NAME"
+
+  az cognitiveservices account create \
+    --name "$AOAI_NAME" \
+    --resource-group "$RG_NAME" \
+    --kind OpenAI \
+    --sku S0 \
+    --location "$AOAI_LOCATION" \
+    --yes \
+    --only-show-errors
+fi
+
+
+# Define deployments (simple arrays instead of objects)
+DEPLOY_NAMES=("gpt-4o" "text-embedding-3-small")
+MODEL_NAMES=("gpt-4o" "text-embedding-3-small")
+MODEL_VERSIONS=("2024-11-20" "1")
+SKU_NAMES=("GlobalStandard" "Standard")
+SKU_CAPACITY=(30 5)
+
+
+# Loop through deployments
+for i in "${!DEPLOY_NAMES[@]}"; do
+  DEPLOY_NAME="${DEPLOY_NAMES[$i]}"
+
+  if ! az cognitiveservices account deployment show \
+    --name "$AOAI_NAME" \
+    --resource-group "$RG_NAME" \
+    --deployment-name "$DEPLOY_NAME" \
+    --only-show-errors >/dev/null 2>&1; then
+
+    echo "Deploying ${MODEL_NAMES[$i]}..."
+
+    az cognitiveservices account deployment create \
       --name "$AOAI_NAME" \
       --resource-group "$RG_NAME" \
-      --kind OpenAI \
-      --sku S0 \
-      --location "$AOAI_LOCATION" \
-      --yes \
+      --deployment-name "$DEPLOY_NAME" \
+      --model-name "${MODEL_NAMES[$i]}" \
+      --model-version "${MODEL_VERSIONS[$i]}" \
+      --model-format OpenAI \
+      --sku-name "${SKU_NAMES[$i]}" \
+      --sku-capacity "${SKU_CAPACITY[$i]}" \
       --only-show-errors
-    AOAI_CREATE_RC=$?
-    set -e
   else
-    AOAI_CREATE_RC=0
+    echo "Deployment exists: $DEPLOY_NAME"
   fi
+done
 
-  if [ "$AOAI_CREATE_RC" -eq 0 ]; then
-    if ! az cognitiveservices account deployment show \
-      --name "$AOAI_NAME" \
-      --resource-group "$RG_NAME" \
-      --deployment-name "$AOAI_DEPLOYMENT_NAME" \
-      --only-show-errors >/dev/null 2>&1; then
-      echo "Deploying model $AOAI_MODEL_NAME on $AOAI_NAME"
-      set +e
-      az cognitiveservices account deployment create \
-        --name "$AOAI_NAME" \
-        --resource-group "$RG_NAME" \
-        --deployment-name "$AOAI_DEPLOYMENT_NAME" \
-        --model-name "$AOAI_MODEL_NAME" \
-        --model-version "$AOAI_MODEL_VERSION" \
-        --model-format OpenAI \
-        --sku-name Standard \
-        --sku-capacity 1 \
-        --only-show-errors
-      AOAI_DEPLOY_RC=$?
-      set -e
-    else
-      AOAI_DEPLOY_RC=0
-    fi
 
-    AOAI_ENDPOINT=$(az cognitiveservices account show \
-      --name "$AOAI_NAME" \
-      --resource-group "$RG_NAME" \
-      --query "properties.endpoint" \
-      -o tsv 2>/dev/null || echo "NOT_AVAILABLE")
+# Get endpoint + key
+AOAI_ENDPOINT=$(az cognitiveservices account show \
+  --name "$AOAI_NAME" \
+  --resource-group "$RG_NAME" \
+  --query "properties.endpoint" \
+  -o tsv 2>/dev/null || echo "NOT_AVAILABLE")
 
-    AOAI_KEY=$(az cognitiveservices account keys list \
-      --name "$AOAI_NAME" \
-      --resource-group "$RG_NAME" \
-      --query "key1" \
-      -o tsv 2>/dev/null || echo "NOT_AVAILABLE")
-
-    if [ "${AOAI_DEPLOY_RC:-0}" -ne 0 ]; then
-      AOAI_DEPLOYMENT_OUT="DEPLOYMENT_FAILED"
-      echo "WARNING: Azure OpenAI deployment failed for $AOAI_NAME"
-    fi
-  else
-    AOAI_DEPLOYMENT_OUT="RESOURCE_CREATE_FAILED"
-    echo "WARNING: Azure OpenAI resource creation failed for $AOAI_NAME"
-  fi
+AOAI_KEY=$(az cognitiveservices account keys list \
+  --name "$AOAI_NAME" \
+  --resource-group "$RG_NAME" \
+  --query "key1" \
+  -o tsv 2>/dev/null || echo "NOT_AVAILABLE")
+``
 
   # 6) Windows 11 VM
   if ! az vm show -g "$RG_NAME" -n "$VM_NAME" --only-show-errors >/dev/null 2>&1; then
@@ -229,6 +265,7 @@ fi
       --enable-secure-boot true \
       --enable-vtpm true \
       --public-ip-sku Standard \
+      --public-ip-address-dns-name "$VM_NAME" \
       --only-show-errors
   else
     echo "VM already exists: $VM_NAME"
@@ -239,21 +276,6 @@ fi
     --resource-group "$RG_NAME" \
     --name "$VM_NAME" \
     --time "$SHUTDOWN_TIME_UTC" \
-    --only-show-errors
-
-  # 8) Install tools + clone repo + write credentials on VM
-  az vm run-command invoke \
-    --resource-group "$RG_NAME" \
-    --name "$VM_NAME" \
-    --command-id RunPowerShellScript \
-    --scripts @vm-bootstrap.ps1 \
-    --parameters \
-      VmAdminUser="$VM_ADMIN_USER" \
-      CosmosConn="$COSMOS_CONN" \
-      AoaiEndpoint="$AOAI_ENDPOINT" \
-      AoaiKey="$AOAI_KEY" \
-      AoaiDeployment="$AOAI_DEPLOYMENT_OUT" \
-      RepoUrl="$REPO_URL" \
     --only-show-errors
 
   echo "Completed lab $i: $USER_ALIAS"
