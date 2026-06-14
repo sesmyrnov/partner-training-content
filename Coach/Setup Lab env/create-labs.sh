@@ -10,7 +10,7 @@ COUNT="${1:-1}"
 
 # ===== Tenant / naming =====
 DOMAIN="${DOMAIN:-mannu2050gmail578.onmicrosoft.com}"
-USER_PREFIX="${USER_PREFIX:-lab6auser}"      # e.g. lab1user1, lab1user2
+USER_PREFIX="${USER_PREFIX:-lab7buser}"      # e.g. lab1user1, lab1user2
 RG_SUFFIX="${RG_SUFFIX:--rg}"               # e.g. lab1user1-rg
 CDB_PREFIX="${CDB_PREFIX:-cdb}"             # e.g. cdblab1user1
 AOAI_PREFIX="${AOAI_PREFIX:-aoai}"          # e.g. aoai-lab1user1
@@ -26,8 +26,8 @@ LOCATION="${LOCATION:-westus2}"             # RG / Cosmos DB / VM
 AOAI_LOCATION="${AOAI_LOCATION:-eastus}"    # Azure OpenAI (safer for ada-002)
 
 # ===== Shared passwords =====
-ENTRA_USER_PASSWORD="${ENTRA_USER_PASSWORD:-<SpecifyYourPasswordhere>}"
-VM_ADMIN_PASSWORD="${VM_ADMIN_PASSWORD:-<SpecifyYourPasswordhere>}"
+ENTRA_USER_PASSWORD="${ENTRA_USER_PASSWORD:-<changeurpassword>}"
+VM_ADMIN_PASSWORD="${VM_ADMIN_PASSWORD:-<changeurpassword>}"
 
 # ===== VM sizing =====
 VM_SIZE="${VM_SIZE:-Standard_B2as_v2}"
@@ -260,8 +260,11 @@ AOAI_ID=$(az cognitiveservices account show \
 
 USER_EMAIL="$UPN"
 
-az role assignment create \
-  --assignee "$USER_EMAIL" \
+USER_OBJECT_ID=$(az ad user show --id "$USER_EMAIL" --query id -o tsv)
+
+MSYS_NO_PATHCONV=1 az role assignment create \
+  --assignee-object-id "$USER_OBJECT_ID" \
+  --assignee-principal-type User \
   --role "Cognitive Services OpenAI User" \
   --scope "$AOAI_ID" \
   --only-show-errors || true
@@ -294,7 +297,7 @@ echo "$IMAGE_VERSION"
       --enable-vtpm true \
       --public-ip-sku Standard \
       --public-ip-address-dns-name "$VM_NAME" \
-      --debug
+      --only-show-errors
   else
     echo "VM already exists: $VM_NAME"
   fi
