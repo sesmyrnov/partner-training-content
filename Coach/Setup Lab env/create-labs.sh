@@ -10,22 +10,27 @@ COUNT="${1:-1}"
 
 # ===== Tenant / naming =====
 DOMAIN="${DOMAIN:-mannu2050gmail578.onmicrosoft.com}"
-USER_PREFIX="${USER_PREFIX:-labybuser}"      # e.g. lab1user1, lab1user2
+USER_PREFIX="${USER_PREFIX:-lab6auser}"      # e.g. lab1user1, lab1user2
 RG_SUFFIX="${RG_SUFFIX:--rg}"               # e.g. lab1user1-rg
 CDB_PREFIX="${CDB_PREFIX:-cdb}"             # e.g. cdblab1user1
 AOAI_PREFIX="${AOAI_PREFIX:-aoai}"          # e.g. aoai-lab1user1
 VM_PREFIX="${VM_PREFIX:-vm}"                # e.g. vm-lab1user1
 
+IMAGE_DEF="myImageDef"
+IMAGE="labimage"
+GALLERY="myGallery"
+IMAGE_VERSION="1.0.0"
+RG_NAME_IMG="lab8user1-rg"
 # ===== Regions =====
 LOCATION="${LOCATION:-westus2}"             # RG / Cosmos DB / VM
 AOAI_LOCATION="${AOAI_LOCATION:-eastus}"    # Azure OpenAI (safer for ada-002)
 
 # ===== Shared passwords =====
-ENTRA_USER_PASSWORD="${ENTRA_USER_PASSWORD:-Lxx}"
-VM_ADMIN_PASSWORD="${VM_ADMIN_PASSWORD:-Lxx}"
+ENTRA_USER_PASSWORD="${ENTRA_USER_PASSWORD:-<SpecifyYourPasswordhere>}"
+VM_ADMIN_PASSWORD="${VM_ADMIN_PASSWORD:-<SpecifyYourPasswordhere>}"
 
 # ===== VM sizing =====
-VM_SIZE="${VM_SIZE:-Standard_F2als_v7}"
+VM_SIZE="${VM_SIZE:-Standard_B2as_v2}"
 
 # ===== Repo =====
 REPO_URL="${REPO_URL:-https://github.com/AzureCosmosDB/partner-training-content.git}"
@@ -136,6 +141,7 @@ if ! az cosmosdb show --name "$CDB_NAME" --resource-group "$RG_NAME" --only-show
     --resource-group "$RG_NAME" \
     --kind GlobalDocumentDB \
     --locations regionName="$LOCATION" failoverPriority=0 isZoneRedundant=false \
+    --capabilities EnableNoSQLVectorSearch \
     --only-show-errors
 else
   echo "Cosmos DB already exists: $CDB_NAME"
@@ -243,21 +249,43 @@ AOAI_ENDPOINT=$(az cognitiveservices account show \
   --query "properties.endpoint" \
   -o tsv 2>/dev/null || echo "NOT_AVAILABLE")
 
-AOAI_KEY=$(az cognitiveservices account keys list \
+# ===== Assign OpenAI RBAC =====
+
+echo "Assigning Azure OpenAI role..."
+
+AOAI_ID=$(az cognitiveservices account show \
   --name "$AOAI_NAME" \
   --resource-group "$RG_NAME" \
-  --query "key1" \
-  -o tsv 2>/dev/null || echo "NOT_AVAILABLE")
+  --query id -o tsv)
+
+USER_EMAIL="$UPN"
+
+az role assignment create \
+  --assignee "$USER_EMAIL" \
+  --role "Cognitive Services OpenAI User" \
+  --scope "$AOAI_ID" \
+  --only-show-errors || true
 
 
   # 6) Windows 11 VM
+
+export MSYS_NO_PATHCONV=1
+
+IMAGE_ID="/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RG_NAME_IMG/providers/Microsoft.Compute/galleries/$GALLERY/images/$IMAGE_DEF/versions/$IMAGE_VERSION"
+
+echo "$SUBSCRIPTION_ID"
+echo "$RG_NAME_IMG"
+echo "$GALLERY"
+echo "$IMAGE_DEF"
+echo "$IMAGE_VERSION"
+
   if ! az vm show -g "$RG_NAME" -n "$VM_NAME" --only-show-errors >/dev/null 2>&1; then
     echo "Creating Windows 11 VM: $VM_NAME"
     az vm create \
       --resource-group "$RG_NAME" \
       --name "$VM_NAME" \
       --location "$LOCATION" \
-      --image "MicrosoftWindowsDesktop:Windows-11:win11-24h2-pro:latest" \
+      --image $IMAGE_ID \
       --size "$VM_SIZE" \
       --admin-username "$VM_ADMIN_USER" \
       --admin-password "$VM_ADMIN_PASSWORD" \
@@ -266,7 +294,7 @@ AOAI_KEY=$(az cognitiveservices account keys list \
       --enable-vtpm true \
       --public-ip-sku Standard \
       --public-ip-address-dns-name "$VM_NAME" \
-      --only-show-errors
+      --debug
   else
     echo "VM already exists: $VM_NAME"
   fi
