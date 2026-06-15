@@ -24,6 +24,25 @@ Step-1: Goto the browser you have opened in the previous lab and click on Azure 
 
 Step-2: Click on Data Explorer --> Click on New --> Container. Specify the Database name as lab01 so you can differentiate with other lab.
 
+## Createing Database and container
+
+If you are new to Azure Cosmos DB here are the steps to create the container
+
+- Open Cosmos DB Blade in Azure Portal
+
+- Open Data Explorer
+
+- Click on New Container.
+
+Step-4: Please specify the inputs (refer to next steps for the same)
+- Database id, (new only once subsequently choose from dropdown)
+- Container id, 
+- Partition Key, 
+- Click on Add hierarchical partition key if you need to specify more than one partition key
+- Specify Container throughput = Autoscale
+- Specify Maximum RU/s = 1000
+
+
 Step-3: Follow the steps as below
 ### Part 1: Container Design Experiments
 

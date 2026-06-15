@@ -6,9 +6,9 @@
 
 Modern applications increasingly require intelligent search capabilities that go beyond simple text matching. 
 This challenge demonstrates how to build AI-powered applications using Azure Cosmos DB's vector search capabilities. You will explore a multi-agent banking system that combines traditional queries with AI-powered semantic search.
-## Create the Database and container
+## Creating Database and container
 
-Steps to create the container
+If you are new to Azure Cosmos DB here are the steps to create the container. These are the same steps you have followed in Lab01.
 
 Step-1: Open Cosmos DB Blade in Azure Portal
 

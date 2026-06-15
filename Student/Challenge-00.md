@@ -69,15 +69,17 @@ node –-version
 git –-version
 npm --version
 ```
-Step-5: Install Az CLI  winget install -e --id Microsoft.AzureCLI
+Step-5: Install AZ Cli
   ```bash
-  validate using az --version
+ winget install -e --id Microsoft.AzureCLI
+  az --version
   ```
 
 Step-6: Close the command prompt
 
-Step-7: open git bash and run the following command to clone
+Step-7: open git bash and run the following command to clone (this command will clone the content in the download folder, you can choose any other and remember it)
 ```bash
+cd downloads
 git clone https://github.com/AzureCosmosDB/partner-training-content
 ```
 
