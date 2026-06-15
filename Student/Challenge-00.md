@@ -21,18 +21,11 @@ Before you can start working on the challenges, you need to make sure you have t
   - [Learning Resources](#learning-resources)
 
 ## Access Azure Subscription 
-You will need an Azure subscription to complete this hack. (for June hack you would have received the credentials in your registered email address) If you don't have one, get a free trial here...
-- [Azure Subscription](https://azure.microsoft.com/en-us/free/)
+You will need an Azure subscription to complete this hack. (for June hack you would have received the credentials in your registered email address). If you don't have one, ask proctor.
 
 ## Setup Development Environment 
 
-You will need a set of developer tools to work with the sample application for this hack. 
-
-You can use the credentials provided over your registered email.
-
-### Use Local Workstation
-
-If you want to setup your environment on your local workstation, expand the section below and follow the requirements listed. 
+You will need a set of developer tools to work with the sample application for this hack. You can use the credentials provided over your registered email.
   
 ### Student Resources
 
@@ -46,8 +39,6 @@ You will need to install these on your VM provided:
   - [Node.js](https://nodejs.org/en/download/)
   - [Angular CLI](https://angular.dev/installation#install-angular-cli)
   - [VS Code](https://code.visualstudio.com/Download) with [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
-
-</details>
 
 ## Setup the Banking Application
 You need to deploy a multi-agent banking application that uses Azure Cosmos DB as its data foundation. This application demonstrates real-world patterns for using Cosmos DB with AI services.
@@ -69,25 +60,36 @@ Press the Windows Key, type "Environment Variables" in the search, and select Ed
   - Click New and paste the following path
 			%AppData%\npm
   - Press Ok to close, repeat for another dialogue
-Step-4: Open Command prompt in the VM and execute the following to check if the pre-requisites are installed:
-1) python –-version
-2) pip –-version
-3) node –-version
-4) git –-version
-5) npm --version
 
+Step-4: Open Command prompt in the VM and execute the following to check if the pre-requisites are installed:
+```bash
+python –-version
+pip –-version
+node –-version
+git –-version
+npm --version
+```
 Step-5: Install Az CLI  winget install -e --id Microsoft.AzureCLI
-  - validate using az --version
+  ```bash
+  validate using az --version
+  ```
+
 Step-6: Close the command prompt
 
 Step-7: open git bash and run the following command to clone
-- git clone https://github.com/AzureCosmosDB/partner-training-content
+```bash
+git clone https://github.com/AzureCosmosDB/partner-training-content
+```
 
 ## Verify Azure Services
 Step-1: Open the browser and type portal.azure.com
+
 Step-2: Specify domain user and the same vm password
+
 Step-3: In your phone install Authenticator, scan the QR Code flash on the browser, click next and specify the code in the browser shown in Authenticator app against the account.
+
 Step-4: Click on View All resources.
+
 Step-5: You should see OpenAI, Cosmos DB & VM in which you are logged in and supporting services.
 
 All Services belong to the same resource group please stick to the same.

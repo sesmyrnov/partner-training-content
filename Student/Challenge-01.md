@@ -19,8 +19,11 @@ You can find sample data documents in the `Challenge01/` folder of the under the
 **Please note for all the containers use Autoscale and specify 1000 RUs as upper bound**
 
 Follow the steps as:
+
 Step-1: Goto the browser you have opened in the previous lab and click on Azure Cosmos DB.
+
 Step-2: Click on Data Explorer --> Click on New --> Container. Specify the Database name as lab01 so you can differentiate with other lab.
+
 Step-3: Follow the steps as below
 ### Part 1: Container Design Experiments
 

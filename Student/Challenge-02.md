@@ -11,8 +11,11 @@ This challenge demonstrates how to build AI-powered applications using Azure Cos
 Steps to create the container
 
 Step-1: Open Cosmos DB Blade in Azure Portal
+
 Step-2: Open Data Explorer
+
 Step-3: Click on New Container.
+
 Step-4: Specify 
 - Database id, (new only once subsequently choose from dropdown)
 - Container id, 
@@ -21,14 +24,15 @@ Step-4: Specify
 - Specify Container throughput = Autoscale
 - Specify Maximum RU/s = 1000
 
-Step-5: Only for OffersData expand Container Vector Policy and specify:
+Step-4a: Only for OffersData expand Container Vector Policy and specify:
 - Path = /vector
 - Data type = float32
 - Distance function = cosine
 - Dimensions = 1536
 - Index type = diskANN (leave everything else as default)
 
-Create the following database and container (Cosmos DB is case sensitive hence ensure correctness):
+
+Step-5: Create the following database and container (Cosmos DB is case sensitive hence ensure correctness):
 
 | Database id | Container id | Partition Key Path(s) | Hierarchical PK | Autoscale | RUs | Notes |
 |---|---|---|---|---|---|---|
@@ -42,8 +46,11 @@ Create the following database and container (Cosmos DB is case sensitive hence e
 
 ## Load the Data
 We have created sample data for the lab, follow the stes to upload it.
+
 Step-1: Open the command prompt
+
 Step-2: goto folder <path where you have cloned the repo>partner-training-content\Student\Resources\banking-workshop\infra\data
+
 Step-3: Run command
 ```python
 python load.py
@@ -169,7 +176,7 @@ This app comes with a few pre-created tenant and user ids that you can use to te
 | Tenant Id | User Id  |
 |-----------|----------|
 | Contoso   | Mark     |
-| Contoso   | Manish     |
+| Contoso   | Manish   |
 | Contoso   | Sandeep  |
 | Contoso   | Theo     |
 | Fabrikam  | Sajee    |
