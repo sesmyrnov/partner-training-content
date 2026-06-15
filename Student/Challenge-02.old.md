@@ -6,55 +6,34 @@
 
 Modern applications increasingly require intelligent search capabilities that go beyond simple text matching. 
 This challenge demonstrates how to build AI-powered applications using Azure Cosmos DB's vector search capabilities. You will explore a multi-agent banking system that combines traditional queries with AI-powered semantic search.
-## Create the Database and container
 
-Steps to create the container
-
-Step-1: Open Cosmos DB Blade in Azure Portal
-Step-2: Open Data Explorer
-Step-3: Click on New Container.
-Step-4: Specify 
-- Database id, (new only once subsequently choose from dropdown)
-- Container id, 
-- Partition Key, 
-- Click on Add hierarchical partition key if you need to specify more than one partition key
-- Specify Container throughput = Autoscale
-- Specify Maximum RU/s = 1000
-
-Step-5: Only for OffersData expand Container Vector Policy and specify:
-- Path = /vector
-- Data type = float32
-- Distance function = cosine
-- Dimensions = 1536
-- Index type = diskANN (leave everything else as default)
-
-Create the following database and container (Cosmos DB is case sensitive hence ensure correctness):
-
-| Database id | Container id | Partition Key Path(s) | Hierarchical PK | Autoscale | RUs | Notes |
-|---|---|---|---|---|---|---|
-| MultiAgentBanking | Chat | /tenantId, /userId, /sessionId | Yes | Yes | 1000 | Chat session isolation, high cardinality |
-| MultiAgentBanking | AccountsData | /tenantId, /accountId | Yes | Yes | 1000 | Multi-tenant financial data |
-| MultiAgentBanking | OffersData | /tenantId | No | Yes | 1000 | Includes vector + full-text indexing |
-| MultiAgentBanking | Users | /tenantId | No | Yes | 1000 | User master data |
-| MultiAgentBanking | Checkpoints | /partition_key | No | Yes | 1000 | Workflow / agent state checkpoints |
-| MultiAgentBanking | ChatHistory | /sessionId | No | Yes | 1000 | Historical chat logs |
-| MultiAgentBanking | Debug | /sessionId | No | Yes | 1000 | Debug / troubleshooting data |
-
-## Load the Data
-We have created sample data for the lab, follow the stes to upload it.
-Step-1: Open the command prompt
-Step-2: goto folder <path where you have cloned the repo>partner-training-content\Student\Resources\banking-workshop\infra\data
-Step-3: Run command
-```python
-python load.py
-```
-Step-4: Go back to portal and check if you have data populated in all the collections.
-
-***if you face issues then you can check the database id, container id, partition key correctness.***
+> If you are using GitHub Codespaces, restart it if needed (in case it is inactive)
 
 ## Start the agent service
 
-First, install dependencies. 
+First, install dependencies. If you are using GitHub Codespaces:
+
+```bash
+cd Student/Resources/banking-workshop/backend
+
+python -m venv .venv
+source .venv/bin/activate
+
+pip install -r src/app/requirements.txt
+```
+<details markdown=1>
+<summary markdown="span">Click to expand/collapse Local Workstation instructions to start the agent service </summary>
+
+```bash
+cd Student/Resources/banking-workshop/backend
+
+python -m venv .venv
+source .venv/bin/activate
+
+pip install -r src/app/requirements.txt
+```
+
+For Windows, use the following commands:
 
 ```bash
 cd Student/Resources/banking-workshop/backend
@@ -66,16 +45,10 @@ pip install -r src/app/requirements.txt
 ```
 
 > If you are using PowerShell, activate the virtual environment with `.venv\Scripts\Activate.ps1`
-
+</details>
 Start the FastAPI service:
 
 ```bash
-set COSMOSDB_ENDPOINT=REPLACE_ME_WITH_UR_COSMOSDB_URI
-set AZURE_OPENAI_ENDPOINT=REPLACE_ME_WITH_UR_OPENAI_URI
-set AZURE_OPENAI_COMPLETIONSDEPLOYMENTID=gpt-4o
-set AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=text-embedding-3-small
-set AZURE_OPENAI_API_VERSION=2024-09-01-preview
-
 uvicorn src.app.banking_agents_api:app --host 0.0.0.0 --port 63280
 ```
 
@@ -169,7 +142,6 @@ This app comes with a few pre-created tenant and user ids that you can use to te
 | Tenant Id | User Id  |
 |-----------|----------|
 | Contoso   | Mark     |
-| Contoso   | Manish     |
 | Contoso   | Sandeep  |
 | Contoso   | Theo     |
 | Fabrikam  | Sajee    |

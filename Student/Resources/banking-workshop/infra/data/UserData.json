@@ -42,6 +42,20 @@
         }
     },
     {
+        "id": "Manish",
+        "tenantId": "Contoso",
+        "name": "Manish Sharma",
+        "email": "manish@contoso.com",
+        "type": "BankUser",
+        "phoneNumber": "555-123-240104",
+        "attributes": {
+            "annualSalary": 65000,
+            "creditScore": 690,
+            "debtToIncomeRatio": 0.35,
+            "investmentPortfolioValue": 30000
+        }
+    },
+    {
         "id": "Sajee",
         "tenantId": "Fabrikan",
         "name": "Sajeetharan Sinnathurai",
