@@ -42,6 +42,7 @@ Step-4: Please specify the inputs (refer to next steps for the same)
 - Specify Container throughput = Autoscale
 - Specify Maximum RU/s = 1000
 
+**Please note there are two sets of files: customers.json, products.json and customers_bulk.json, products_bulk.json. The _bulk files contain larger datasets and may take longer to process compared to the regular files. You can choose either set based on your preference.**
 
 Step-3: Follow the steps as below
 ### Part 1: Container Design Experiments
