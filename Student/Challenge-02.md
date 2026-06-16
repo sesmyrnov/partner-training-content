@@ -47,7 +47,7 @@ Step-5: Create the following database and container (Cosmos DB is case sensitive
 ## Load the Data
 We have created sample data for the lab, follow the stes to upload it.
 
-Step-1: Open the notepad and copy paste the following environment variable
+Step-1: Open the notepad and copy paste the following environment variables.
 ```bash
 set COSMOSDB_ENDPOINT=REPLACE_ME_WITH_UR_COSMOSDB_URI
 set AZURE_OPENAI_ENDPOINT=REPLACE_ME_WITH_UR_OPENAI_URI
@@ -55,17 +55,17 @@ set AZURE_OPENAI_COMPLETIONSDEPLOYMENTID=gpt-4.1-mini
 set AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=text-embedding-3-small
 set AZURE_OPENAI_API_VERSION=2024-09-01-preview
 ```
-Let us fill the values
+Let us fill the values:
 
 Step-2: Open the Azure portal --> Cosmos DB Overview page copy the URI and paste against REPLACE_ME_WITH_UR_COSMOSDB_URI in notepad.
 
-Step-3: Navigate to Azure OpenAI blade --> click on "Click here to view endpoints" --> Copy only the endpoint. Paste against the REPLACE_ME_WITH_UR_OPENAI_URI
+Step-3: Navigate to Azure OpenAI blade --> click on "Click here to view endpoints" --> Copy only the endpoint. Paste it against the REPLACE_ME_WITH_UR_OPENAI_URI.
 
-Step-4: Open the command prompt
+Step-4: Open the command prompt.
 
-Step-5: goto folder <path where you have cloned the repo>partner-training-content\Student\Resources\banking-workshop\infra\data
+Step-5: Goto folder <path where you have cloned the repo>partner-training-content\
 
-Step-6: Copy the  environment variable with updated values to command prompt and press enter. This will set the environment variables.
+Step-6: Copy the environment variables from notepad where you have  updated values to command prompt and press enter. This will set the environment variables.
 ```bash
 set COSMOSDB_ENDPOINT=REPLACE_ME_WITH_UR_COSMOSDB_URI
 set AZURE_OPENAI_ENDPOINT=REPLACE_ME_WITH_UR_OPENAI_URI
@@ -73,7 +73,7 @@ set AZURE_OPENAI_COMPLETIONSDEPLOYMENTID=gpt-4.1-mini
 set AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=text-embedding-3-small
 set AZURE_OPENAI_API_VERSION=2024-09-01-preview
 ```
-Step-7: First, install dependencies and upgrade NodeJS.
+Step-7: Let us install dependencies and upgrade NodeJS.
 
 ```bash
 cd Student/Resources/banking-workshop/backend
@@ -86,7 +86,13 @@ pip install -r src/app/requirements.txt
 winget install --id OpenJS.NodeJS.22 --accept-package-agreements --accept-source-agreements
 ```
 
-Step-9: Start the FastAPI service:
+Step-9: Load the data (assuming you are in folder ..Student\Resources\banking-workshop\infra\data):
+```bash
+cd..
+python ./infra/data/load.py
+```
+
+Step-10: Start the FastAPI service:
 
 ```bash
 uvicorn src.app.banking_agents_api:app --host 0.0.0.0 --port 63280
@@ -147,9 +153,7 @@ I want to transfer 500 from Acc001 to Acc003
 
 Navigate to the Azure Portal, and open the Azure Cosmos DB account. Open the `AccountsData` container and verify the transaction was successful.
 
-Let's test a new scenario that will invoke a vector search for banking offers.
-
-Return to the frontend in your browser and create a new conversation.
+Return to the frontend in your browser, Let's test a new scenario that will invoke a vector search for banking offers. Close the existing conversation and open a new one.
 
 1. Type the following text to enquire about banking offers:
 
