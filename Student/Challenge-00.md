@@ -9,36 +9,16 @@ Thank you for participating in this Cosmos DB training. Before you can hack, you
 In this challenge, we need you to set up your development environment and Azure subscription to ensure you have all the necessary tools and access for the upcoming challenges.
 
 Before you can start working on the challenges, you need to make sure you have the right prerequisites in place.
-- [Challenge 00 - Prerequisites - Ready, Set, GO!](#challenge-00---prerequisites---ready-set-go)
-  - [Introduction](#introduction)
-  - [Access Azure Subscription](#access-azure-subscription)
-  - [Setup Development Environment](#setup-development-environment)
-    - [Use Local Workstation (For June hack it is Preferred)](#use-local-workstation)
-    - [Student Resources](#student-resources)
-  - [Setup the Banking Application](#setup-the-banking-application)
-  - [Deploy Azure Services](#deploy-azure-services)
-  - [Success Criteria](#success-criteria)
-  - [Learning Resources](#learning-resources)
 
 ## Access Azure Subscription 
-You will need an Azure subscription to complete this hack. (for June hack you would have received the credentials in your registered email address). If you don't have one, ask proctor.
+You will need an Azure subscription to complete this hack. (for June hack you would have received the credentials in your registered email address). If you don't have one, ask the proctor.
 
 ## Setup Development Environment 
 
 You will need a set of developer tools to work with the sample application for this hack. You can use the credentials provided over your registered email.
   
-## Setup the Banking Application
-You need to run the multi-agent banking application that uses Azure Cosmos DB as its data foundation. This application demonstrates real-world patterns for using Cosmos DB with AI services.
+## Access the lab & verify pre-reqs
 
-The Azure Subscription will already have:
-- Azure Cosmos DB account
-- Azure OpenAI service with required models
-- User-assigned managed identity with proper RBAC permissions
-- Pre-seeded sample data for the banking application (you need to upload)
-
-**NOTE:** All resources will be automatically configured with proper security settings and RBAC permissions. This includes a managed identity that will have access to both Cosmos DB and Azure OpenAI services.
-
-## Verify Pre-req Installation 
 Step-1: Open Remote Desktop / Windows + run --> type mstsc.
 
 Step-2: Specify the Computer Name & credentials shared to you via email (UserName & Password).
@@ -81,9 +61,19 @@ Now you have validated that the VM have following components successfully instal
 - [Angular CLI](https://angular.dev/installation#install-angular-cli)
 - [VS Code](https://code.visualstudio.com/Download) with [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
 
-
-
 ## Verify Azure Services
+You need to run the multi-agent banking application that uses Azure Cosmos DB as its data foundation. This application demonstrates real-world patterns for using Cosmos DB with AI services.
+
+The Azure Subscription will already have:
+- Azure Cosmos DB account
+- Azure OpenAI service with required models
+- User-assigned managed identity with proper RBAC permissions
+- Pre-seeded sample data for the banking application (you need to upload)
+
+**NOTE:** All resources will be automatically configured with proper security settings and RBAC permissions. This includes a managed identity that will have access to both Cosmos DB and Azure OpenAI services.
+
+Now follow the below mentioned steps:
+
 Step-1: Open the browser and type portal.azure.com
 
 Step-2: Specify domain user and the same vm password
@@ -98,9 +88,6 @@ All Services belong to the same resource group please stick to the same.
 
 ## Learning Resources
 
-- [Request Access to Azure OpenAI Service](https://aka.ms/oaiapply)
-- [Manage Azure OpenAI Service Quota](https://learn.microsoft.com/azure/ai-services/openai/how-to/quota)
-- [Azure Subscription Permission Requirements](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/privileged#owner)
 - [Azure Developer CLI Installation](https://aka.ms/install-azd)
 
 **[Home](../README.md)** - [Next Challenge >](./Challenge-01.md)
