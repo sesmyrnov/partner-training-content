@@ -52,7 +52,9 @@ The VM will already have:
 **NOTE:** All resources will be automatically configured with proper security settings and RBAC permissions. This includes a managed identity that will have access to both Cosmos DB and Azure OpenAI services.
 ## Verify Pre-req Installation 
 Step-1: Open Remote Desktop / Windows + run --> type mstsc.
-Step-2: Specify the credentials share to your (UserName & Password
+
+Step-2: Specify the credentials share to your (UserName & Password).
+
 Step-3: Add npm to Your Windows Environment PATH.
 Press the Windows Key, type "Environment Variables" in the search, and select Edit the system environment variables.
   - Click the Environment Variables... button at the bottom right
