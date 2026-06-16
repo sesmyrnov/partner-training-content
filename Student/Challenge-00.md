@@ -4,9 +4,9 @@
 
 ## Introduction
 
-Thank you for participating in this Cosmos DB training. Before you can hack, you will need to set up some prerequisites.
+Thank you for participating in this Cosmos DB training. Before you can hack, you will need to verify & set up some prerequisites.
 
-In this challenge, we need to set up your development environment and Azure subscription to ensure you have all the necessary tools and access for the upcoming challenges.
+In this challenge, we need you to set up your development environment and Azure subscription to ensure you have all the necessary tools and access for the upcoming challenges.
 
 Before you can start working on the challenges, you need to make sure you have the right prerequisites in place.
 - [Challenge 00 - Prerequisites - Ready, Set, GO!](#challenge-00---prerequisites---ready-set-go)
@@ -27,35 +27,24 @@ You will need an Azure subscription to complete this hack. (for June hack you wo
 
 You will need a set of developer tools to work with the sample application for this hack. You can use the credentials provided over your registered email.
   
-### Student Resources
-
-The sample application code, Azure deployment scripts, and sample data sources for this hack are available in a Student Resources package.
-
-You will need to install these on your VM provided:
-
-- [Git](https://git-scm.com/downloads)
-  - [Azure Developer CLI (azd)](https://aka.ms/install-azd)
-  - [Python 3.12+](https://www.python.org/downloads/)
-  - [Node.js](https://nodejs.org/en/download/)
-  - [Angular CLI](https://angular.dev/installation#install-angular-cli)
-  - [VS Code](https://code.visualstudio.com/Download) with [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
-
 ## Setup the Banking Application
-You need to deploy a multi-agent banking application that uses Azure Cosmos DB as its data foundation. This application demonstrates real-world patterns for using Cosmos DB with AI services.
+You need to run the multi-agent banking application that uses Azure Cosmos DB as its data foundation. This application demonstrates real-world patterns for using Cosmos DB with AI services.
 
-The VM will already have:
+The Azure Subscription will already have:
 - Azure Cosmos DB account
 - Azure OpenAI service with required models
 - User-assigned managed identity with proper RBAC permissions
 - Pre-seeded sample data for the banking application (you need to upload)
 
 **NOTE:** All resources will be automatically configured with proper security settings and RBAC permissions. This includes a managed identity that will have access to both Cosmos DB and Azure OpenAI services.
+
 ## Verify Pre-req Installation 
 Step-1: Open Remote Desktop / Windows + run --> type mstsc.
 
-Step-2: Specify the credentials share to your (UserName & Password).
+Step-2: Specify the Computer Name & credentials shared to you via email (UserName & Password).
 
-Step-3: Add npm to Your Windows Environment PATH.
+Step-3: Once connected to VM, first step is that you need to add npm to Your Windows Environment PATH.
+
 Press the Windows Key, type "Environment Variables" in the search, and select Edit the system environment variables.
   - Click the Environment Variables... button at the bottom right
   - Under User variables, look for the variable named Path (or PATH), select it, and click Edit.
@@ -84,6 +73,15 @@ Step-7: open git bash and run the following command to clone (this command will 
 cd downloads
 git clone https://github.com/AzureCosmosDB/partner-training-content
 ```
+Now you have validated that the VM have following components successfully installed:
+- [Git](https://git-scm.com/downloads)
+- [Azure Developer CLI (azd)](https://aka.ms/install-azd)
+- [Python 3.12+](https://www.python.org/downloads/)
+- [Node.js](https://nodejs.org/en/download/)
+- [Angular CLI](https://angular.dev/installation#install-angular-cli)
+- [VS Code](https://code.visualstudio.com/Download) with [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+
+
 
 ## Verify Azure Services
 Step-1: Open the browser and type portal.azure.com

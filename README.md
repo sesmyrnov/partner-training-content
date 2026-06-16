@@ -25,7 +25,7 @@ In this hack you will learn how to:
 This hack has the following challenges:
 
 - Challenge 00: **[Prerequisites - Ready, Set, GO!](Student/Challenge-00.md)**
-   - Prepare your development environment, Azure subscription, provision Cosmos DB accounts, configure basics, and validate connectivity
+   - Validate development environment, check the Azure environment, configure basics, and validate connectivity
 - Challenge 01: **[Data Modeling & Query Optimization](Student/Challenge-01.md)**
    - Design partitioned data models, write efficient queries, and analyze performance
 - Challenge 02: **[AI-Powered Search with Vector Embeddings](Student/Challenge-02.md)**
@@ -43,21 +43,31 @@ Before starting this hack, you should have:
   - Experience with at least one programming language (Python, C#, Node.js)
   - Basic knowledge of cloud computing concepts
 
-- **Azure Requirements:**
-  - Azure subscription with **Owner** rights
-  - Access to Azure OpenAI service ([Request Access](https://aka.ms/oaiapply))
-  - Sufficient Azure OpenAI quota (30K tokens/min for GPT-4o, 5K tokens/min for text-embedding-3-small)
+- **Basic Requirements:**
+  - Access to RDP (Remote Desktop)
+  - Install Microsoft Authenticator App on your mobile phone
+  - Keep the User Name, Password & Computer Name handy (sent to you over an email)
+
+## Get Started
+Step-1: Open Remote Desktop / Windows + run --> type mstsc.
+
+Step-2: Specify the Credentials as:
+```Bash 
+  Computer Name e.g. xxx.region.cloudapp.azure.com 
+  User Name e.g. Nosqlxxx
+  Password
+```
+Now you are into the VM and it is time to start with First lab click to start **[Prerequisites - Ready, Set, GO!](Student/Challenge-00.md)**
 
 ## Repository Contents
-
-- `./Coach`
-  - Coach's Guide and related files
-  - `/Solutions`
-    - Solution files with completed example answers to each challenge
 - `./Student`
   - Student's Challenge Guide
   - `/Resources`
     - Resource files, sample code, applications, and templates provided to students
+- `./Coach`
+  - Coach's Guide and related files
+  - `/Solutions`
+    - Solution files with completed example answers to each challenge
 
 ## Contributors
 
