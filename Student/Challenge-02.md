@@ -47,21 +47,33 @@ Step-5: Create the following database and container (Cosmos DB is case sensitive
 ## Load the Data
 We have created sample data for the lab, follow the stes to upload it.
 
-Step-1: Open the command prompt
-
-Step-2: goto folder <path where you have cloned the repo>partner-training-content\Student\Resources\banking-workshop\infra\data
-
-Step-3: Run command
-```python
-python load.py
+Step-1: Open the notepad and copy paste the following environment variable
+```bash
+set COSMOSDB_ENDPOINT=REPLACE_ME_WITH_UR_COSMOSDB_URI
+set AZURE_OPENAI_ENDPOINT=REPLACE_ME_WITH_UR_OPENAI_URI
+set AZURE_OPENAI_COMPLETIONSDEPLOYMENTID=gpt-4.1-mini
+set AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=text-embedding-3-small
+set AZURE_OPENAI_API_VERSION=2024-09-01-preview
 ```
-Step-4: Go back to portal and check if you have data populated in all the collections.
+Let us fill the values
 
-***if you face issues then you can check the database id, container id, partition key correctness.***
+Step-2: Open the Azure portal --> Cosmos DB Overview page copy the URI and paste against REPLACE_ME_WITH_UR_COSMOSDB_URI in notepad.
 
-## Start the agent service
+Step-3: Navigate to Azure OpenAI blade --> click on "Click here to view endpoints" --> Copy only the endpoint. Paste against the REPLACE_ME_WITH_UR_OPENAI_URI
 
-First, install dependencies. 
+Step-4: Open the command prompt
+
+Step-5: goto folder <path where you have cloned the repo>partner-training-content\Student\Resources\banking-workshop\infra\data
+
+Step-6: Copy the  environment variable with updated values to command prompt and press enter. This will set the environment variables.
+```bash
+set COSMOSDB_ENDPOINT=REPLACE_ME_WITH_UR_COSMOSDB_URI
+set AZURE_OPENAI_ENDPOINT=REPLACE_ME_WITH_UR_OPENAI_URI
+set AZURE_OPENAI_COMPLETIONSDEPLOYMENTID=gpt-4.1-mini
+set AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=text-embedding-3-small
+set AZURE_OPENAI_API_VERSION=2024-09-01-preview
+```
+Step-7: First, install dependencies and upgrade NodeJS.
 
 ```bash
 cd Student/Resources/banking-workshop/backend
@@ -70,19 +82,13 @@ python -m venv .venv
 .venv\Scripts\activate
 
 pip install -r src/app/requirements.txt
+
+winget install --id OpenJS.NodeJS.22 --accept-package-agreements --accept-source-agreements
 ```
 
-> If you are using PowerShell, activate the virtual environment with `.venv\Scripts\Activate.ps1`
-
-Start the FastAPI service:
+Step-9: Start the FastAPI service:
 
 ```bash
-set COSMOSDB_ENDPOINT=REPLACE_ME_WITH_UR_COSMOSDB_URI
-set AZURE_OPENAI_ENDPOINT=REPLACE_ME_WITH_UR_OPENAI_URI
-set AZURE_OPENAI_COMPLETIONSDEPLOYMENTID=gpt-4o
-set AZURE_OPENAI_EMBEDDINGDEPLOYMENTID=text-embedding-3-small
-set AZURE_OPENAI_API_VERSION=2024-09-01-preview
-
 uvicorn src.app.banking_agents_api:app --host 0.0.0.0 --port 63280
 ```
 
