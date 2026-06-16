@@ -4,11 +4,13 @@
 
 ## Introduction
 
-Thank you for participating in this Cosmos DB training. Before you can hack, you will need to verify & set up some prerequisites.
+Thank you for participating in this Azure Cosmos DB training.
 
-In this challenge, we need you to set up your development environment and Azure subscription to ensure you have all the necessary tools and access for the upcoming challenges.
+Before you begin the hands-on challenges, please complete a few prerequisite steps.
 
-Before you can start working on the challenges, you need to make sure you have the right prerequisites in place.
+In this section, you’ll validate your development environment and Azure subscription to ensure you have the required tools, permissions, and access configured correctly.
+
+Make sure all prerequisites are completed before proceeding, as they are essential for successfully working through the upcoming challenges.
 
 ## Access Azure Subscription 
 You will need an Azure subscription to complete this hack. (for June hack you would have received the credentials in your registered email address). If you don't have one, ask the proctor.
@@ -76,11 +78,21 @@ Now follow the below mentioned steps:
 
 Step-1: Open the browser and type portal.azure.com
 
-Step-2: Specify domain user and the same vm password
+Step-2: Specify domain user (e.g. xxx@mannu2050gmail578.onmicrosoft.com), the same vm password and click next. (This is available in the email sent to you).
 
-Step-3: In your phone install Authenticator, scan the QR Code flash on the browser, click next and specify the code in the browser shown in Authenticator app against the account.
+Step-3: Now browser will ask you for MFA click next.
 
-Step-4: Click on View All resources.
+Step-4: In your phone 
+```Bash
+- Install Microsoft Authenticator App.
+- Open the camera in your phone. 
+- Scan the QR Code flashing on the browser & click next. 
+- Now this domain user is added to your authenticator app.
+- Check the phone which will now start displaying the code. It has limited expiry, if the code expires specify the new one.
+- Input the code in the browser screen and login. 
+```
+
+Step-5: Click on View All resources.
 
 Step-5: You should see OpenAI, Cosmos DB & VM in which you are logged in and supporting services.
 
