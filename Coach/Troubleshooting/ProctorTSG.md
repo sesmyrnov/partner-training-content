@@ -216,6 +216,26 @@ Provide:
 
 ---
 
+## **10. QR Code Not Showing for Azure Portal Login**
+
+### **Symptoms**
+
+- User is not getting the QR code during Azure Portal login / MFA setup
+- User cannot complete Authenticator setup
+
+### **Resolution / Escalation**
+
+If user is not getting QR code, proctor should connect with the **Track Owner** and share the troubled user domain user ID.
+
+Track Owner has admin rights and will perform the following:
+
+1. At Azure Portal, go to **Users**
+2. Search for the user with the domain user ID
+3. Click the user and navigate to **Authentication methods**
+4. Remove the existing authentication method (only admin can remove it)
+
+---
+
 ## **✅ Quick Proctor Checklist**
 
 Before escalating, confirm:
