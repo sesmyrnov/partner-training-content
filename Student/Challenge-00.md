@@ -36,17 +36,22 @@ Press the Windows Key, type "Environment Variables" in the search, and select Ed
 
 Step-4: Open Command prompt in the VM and execute the following to check if the pre-requisites are installed:
 ```bash
-python –-version
-pip –-version
-node –-version
-git –-version
+python --version
+pip --version
+node --version
+git --version
 npm --version
 ```
 Step-5: Install AZ Cli
   ```bash
  winget install -e --id Microsoft.AzureCLI
-  az --version
   ```
+
+Open New CMD window and validate version
+```
+ az --version
+```
+
 
 Step-6: Close the command prompt
 
