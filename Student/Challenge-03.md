@@ -37,12 +37,13 @@ This challenge simulates real-world scenarios where you need to balance performa
     }
     ```
   - Ensure variety in `customerId`, `accountId`, and `category` values for realistic testing
-  - Use Data Explorer, SDKs, or bulk insert tools for efficiency
+  - You can find sample pre-jenerated `transactions.json` in the `/Student/Resrouces/Challenge03/` folder.
+  - Use `Data Explorer -> Container -> Item -> Upload Item -> load from JSON`
 
 ### Part 2: Query Analysis and RU Monitoring
 
 - **Execute Queries:**
-Using your tool of choice:
+While file is loading, open a new Browser tab and navigate to `Cosmos DB Account ->  Data Exlorer -> New SQL Query`:
   - Run queries to retrieve transactions by customer ID (single partition)
   ```sql
   SELECT * FROM c WHERE c.customerId = "CUST001"
@@ -60,14 +61,13 @@ Using your tool of choice:
   - For each query, note:
     - RU charge (from Query Metrics in Data Explorer)
     - Query latency in milliseconds
-    - Any throttling events 
+    - Observe Any throttling events 
 
 - **Enable Comprehensive Monitoring:**
   - Navigate to your Cosmos DB account's "Monitoring" section
-  - Under Diagnostic settings, enable diagnostic logging and send logs to a Log Analytics workspace
+  - Click on `Insights` and browse through tabs to observe the metrics while both JSON bulk load and queries are processing
   - Monitor RU consumption, latency, and throttling graphs
-  - Write sample KQL queries to analyze RU usage over time
-
+  
 ### Part 3: Autoscale Configuration and Workload Simulation
 
 - **Switch to Autoscale Throughput:**
@@ -76,10 +76,9 @@ Using your tool of choice:
   - Set maximum RU/s to 4000 (starting minimum will be 400 RU/s)
 
 - **Simulate Variable Banking Workloads:**
-  - Create scripts or use Data Explorer to simulate high-load scenarios:
-    - Create a sample 200K sample JSON document, make it an array, and put it in one file so it can be uploaded in one go. You can use the same schema you used in part 1. 
   - Monitor autoscaling behavior in the Insights dashboard to watch the RU/s usage graph
-  - Record how RU/s adjusts automatically and timing of scaling events
+  - If the load already completed - restart the load or drop/re-create container.
+  - Record how RU/s adjusts automatically and timing of scaling events as well as increased requests concurrency and throughput
 
 ### Part 4: Enterprise Security Implementation (optional)
 
@@ -107,18 +106,18 @@ Using your tool of choice:
 
 ### Part 5: Alerting and Cost Management
 
-- **Configure Monitoring Alerts for RU consumption spikes:**
+- **Configure Monitoring Alerts for RU consumption spikes:** ( optional )
   - Navigate to "Alerts" under the Monitoring section
   - Create alert rules for:
     - High RU consumption (threshold: > 3000 RU/s for 5 minutes)
   - Configure action groups for email/SMS notifications
-  - Test that alerts trigger properly during simulated high-load scenarios by creating a sample 200K sample JSON document, make it as Array and put it in one file so i can upload in one go, follow the structure <specify the structure 
+  - Test that alerts trigger properly during simulated high-load scenarios by re-loading sample generate JSON document with low manual 400 RU/s container to simulate throttling 429 errors.
 
 - **Implement Cost Optimization Best Practices:**
   - **Indexing Policy Optimization:**
     - Review current indexing policy in your container
     - Identify properties that don't need indexing (exclude from index)
-    - Configure composite indexes for common multi-property queries
+    - Check index metrics when executing different queries and configure composite indexes for common multi-property queries (optional)
     - Test query performance before and after indexing changes
   
   - **Time-to-Live (TTL) Configuration:**
@@ -140,9 +139,10 @@ Using your tool of choice:
     - Autoscale with max 4000 RU/s
   - Document scenarios where each approach would be most cost-effective
   - Consider peak vs off-peak usage patterns typical in banking
+  - Try New *Azure Cosmos DB Cost Estimator* to compare the experience: https://aka.ms/cosmoscost  
 
 
-### Part 6: Advanced Security and Cost Analysis
+### Part 6: Advanced Security and Cost Analysis (optional)
 
 - **Security Assessment and Compliance:**
   - Document all security features currently enabled
