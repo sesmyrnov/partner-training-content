@@ -86,7 +86,7 @@ pip install -r src/app/requirements.txt
 winget install --id OpenJS.NodeJS.22 --accept-package-agreements --accept-source-agreements
 ```
 
-Step-8: Load the data (assuming you are in folder ..Student\Resources\banking-workshop\infra\data):
+Step-8: Load the data (assuming you are in folder ..Student\Resources\banking-workshop\backend):
 ```bash
 cd..
 python ./infra/data/load.py
@@ -95,6 +95,7 @@ python ./infra/data/load.py
 Step-9: Start the FastAPI service:
 
 ```bash
+cd ../frontend
 uvicorn src.app.banking_agents_api:app --host 0.0.0.0 --port 63280
 ```
 
