@@ -86,7 +86,7 @@ pip install -r src/app/requirements.txt
 winget install --id OpenJS.NodeJS.22 --accept-package-agreements --accept-source-agreements
 ```
 
-Step-8: Load the data (assuming you are in folder ..Student\Resources\banking-workshop\infra\data):
+Step-8: Load the data (assuming you are in folder ..Student\Resources\banking-workshop\backend):
 ```bash
 cd..
 python ./infra/data/load.py
