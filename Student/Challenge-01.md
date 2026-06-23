@@ -80,7 +80,7 @@ Step-3: Follow the steps as below
 ### Part 3: Query Pattern Analysis
 
 - Create a table documenting RU charges and latency for different query types:
-  - **Point Read:** Retrieve by ID with partition key
+  - **Point Read:** Retrieve by ID with partition key. Optional: Use the .NET app and follow [cosmos-point-read-demo-readme.md](./Resources/Challenge01/cosmos-point-read-demo/cosmos-point-read-demo-readme.md) to simulate point reads.
   - **Range Query:** Query multiple items within a partition
   - **Cross-Partition Query:** Query without partition key filter
   - **Aggregation Query:** Count or sum across partitions
