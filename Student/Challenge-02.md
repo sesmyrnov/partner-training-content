@@ -95,6 +95,7 @@ python ./infra/data/load.py
 Step-9: Start the FastAPI service:
 
 ```bash
+cd ../frontend
 uvicorn src.app.banking_agents_api:app --host 0.0.0.0 --port 63280
 ```
 
