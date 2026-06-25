@@ -10,7 +10,7 @@ COUNT="${1:-1}"
 
 # ===== Tenant / naming =====
 DOMAIN="${DOMAIN:-mannu2050gmail578.onmicrosoft.com}"
-USER_PREFIX="${USER_PREFIX:-lab7buser}"      # e.g. lab1user1, lab1user2
+USER_PREFIX="${USER_PREFIX:-nosqluist}"      # e.g. lab1user1, lab1user2
 RG_SUFFIX="${RG_SUFFIX:--rg}"               # e.g. lab1user1-rg
 CDB_PREFIX="${CDB_PREFIX:-cdb}"             # e.g. cdblab1user1
 AOAI_PREFIX="${AOAI_PREFIX:-aoai}"          # e.g. aoai-lab1user1
@@ -19,18 +19,18 @@ VM_PREFIX="${VM_PREFIX:-vm}"                # e.g. vm-lab1user1
 IMAGE_DEF="myImageDef"
 IMAGE="labimage"
 GALLERY="myGallery"
-IMAGE_VERSION="1.0.0"
+IMAGE_VERSION="1.0.1"
 RG_NAME_IMG="lab8user1-rg"
 # ===== Regions =====
-LOCATION="${LOCATION:-westus2}"             # RG / Cosmos DB / VM
-AOAI_LOCATION="${AOAI_LOCATION:-eastus}"    # Azure OpenAI (safer for ada-002)
+LOCATION="${LOCATION:-centralindia}"             # RG / Cosmos DB / VM
+AOAI_LOCATION="${AOAI_LOCATION:-uaenorth}"    # Azure OpenAI (safer for ada-002)
 
 # ===== Shared passwords =====
-ENTRA_USER_PASSWORD="${ENTRA_USER_PASSWORD:-<changeurpassword>}"
-VM_ADMIN_PASSWORD="${VM_ADMIN_PASSWORD:-<changeurpassword>}"
+ENTRA_USER_PASSWORD="${ENTRA_USER_PASSWORD:-LabUser!23456Aa}"
+VM_ADMIN_PASSWORD="${VM_ADMIN_PASSWORD:-LabUser!23456Aa}"
 
 # ===== VM sizing =====
-VM_SIZE="${VM_SIZE:-Standard_B2as_v2}"
+VM_SIZE="${VM_SIZE:-Standard_D2_v5}"
 
 # ===== Repo =====
 REPO_URL="${REPO_URL:-https://github.com/AzureCosmosDB/partner-training-content.git}"
@@ -62,7 +62,7 @@ done
 # ==========================================================
 # Main loop
 # ==========================================================
-for i in $(seq 1 "$COUNT"); do
+for i in $(seq 61 "$COUNT"); do
   USER_ALIAS="${USER_PREFIX}${i}"                 # same alias used for Entra + VM username
   VM_ADMIN_USER="$USER_ALIAS"
   UPN="${USER_ALIAS}@${DOMAIN}"
@@ -207,10 +207,10 @@ fi
 
 
 # Define deployments (simple arrays instead of objects)
-DEPLOY_NAMES=("gpt-4o" "text-embedding-3-small")
-MODEL_NAMES=("gpt-4o" "text-embedding-3-small")
-MODEL_VERSIONS=("2024-11-20" "1")
-SKU_NAMES=("GlobalStandard" "Standard")
+DEPLOY_NAMES=("gpt-4.1-mini" "text-embedding-3-small")
+MODEL_NAMES=("gpt-4.1-mini" "text-embedding-3-small")
+MODEL_VERSIONS=("" "1")
+SKU_NAMES=("GlobalStandard" "GlobalStandard")
 SKU_CAPACITY=(30 5)
 
 
@@ -302,12 +302,12 @@ echo "$IMAGE_VERSION"
     echo "VM already exists: $VM_NAME"
   fi
 
-  # 7) Auto-shutdown
-  az vm auto-shutdown \
-    --resource-group "$RG_NAME" \
-    --name "$VM_NAME" \
-    --time "$SHUTDOWN_TIME_UTC" \
-    --only-show-errors
+#   #7) Auto-shutdown
+#  az vm auto-shutdown \
+#    --resource-group "$RG_NAME" \
+#    --name "$VM_NAME" \
+#    --time "$SHUTDOWN_TIME_UTC" \
+#     --only-show-errors
 
   echo "Completed lab $i: $USER_ALIAS"
 done
