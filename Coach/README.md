@@ -6,6 +6,8 @@ Welcome to the coach's guide for Azure Cosmos DB for AI & Modern Applications. H
 
 This hack includes optional lecture presentations that feature short presentations to introduce key topics associated with each challenge. It is recommended that the host present each short presentation before attendees kick off that challenge.
 
+**NOTE:** `Kickoff & Overview.pptx` presentation deck has linked Demo videos which are located in the same folder to reduce overall file size based on GitHub limits. They work automatically if repo is cloned any local Letter Drive, but if copied to OneDrive - links need to be updated for videos to work.
+
 **NOTE:** If you are a Hackathon participant, this is the answer guide. Don't cheat yourself by looking at these during the hack! Go learn something. :)
 
 ## Coach's Guides
